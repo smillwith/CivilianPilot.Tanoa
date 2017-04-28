@@ -7,13 +7,21 @@ dingus_fnc_OnPassengersLoaded = {
   _name = _airportNames select _idx;
   _loc = getMarkerPos _marker;
 
-  //Get a new task index?
+  //Clear the 'boarding' flag
+  missionNamespace setVariable ["Boarding", "0"];
+  missionNamespace setVariable ["Boarded", "1"];
+
+  //TODO: Get a new task index?
+  _tasks = [player] call BIS_fnc_tasksUnit;
   _taskIndex = 0;
+  if (count _tasks > 0) then {
+    _taskIndex = ((count _tasks) + 1);
+  };
   _taskName = format ["task%1", _taskIndex];
   _taskTitle = "Arrive at " + _name;
   _taskDescription = "Transport your passengers to " + _name + ".";
 
-  //Other style
+  //taskCreate - Other style
   //0: BOOL or OBJECT or GROUP or SIDE or ARRAY - Task owner(s)
   //1: STRING or ARRAY - Task name or array in the format [task name, parent task name]
   //2: ARRAY or STRING - Task description in the format ["description", "title", "marker"] or CfgTaskDescriptions class
@@ -34,9 +42,50 @@ dingus_fnc_OnPassengersLoaded = {
     "move",
     false
   ] call BIS_fnc_taskCreate;
+};
 
-
-  //Create the 'Arrived' trigger
+dingus_fnc_PassengersBoarding = {
+  params ["_unit"];
+  _vehicle = missionNamespace getVariable ["CurrentPlane", plane0];
   
+  missionNamespace setVariable ["Boarding", "1"];
 
-}
+  //originally, this was done via waypoints. now we want to use commands, etc
+  //{ _x moveInCargo _vehicle; } forEach units group _unit;
+  {
+    _x assignAsCargo _vehicle;
+  } forEach units group _unit;
+  
+  units group _unit orderGetIn true;
+
+  //TODO: Wait??
+
+  [] call dingus_fnc_OnPassengersLoaded;
+};
+
+dingus_fnc_PassengersUnloading = {
+  params ["_unit"];
+
+  missionNamespace setVariable ["Boarded", "0"];
+  missionNamespace setVariable ["Boarding", "0"];
+  missionNamespace setVariable ["Arrived", "0"];
+
+  //TODO: Flight's over. Get out. Then...Send them away to a grave or something?
+  _unit action ["Eject", vehicle _unit];
+};
+
+dingus_fnc_PassengersArrived = {
+  missionNamespace setVariable ["Arrived", "1"];
+};
+
+dingus_fnc_AddPassengerBoardingAction = {
+  params ["_leader"];
+
+  _leader addAction ["Hello, I'm your pilot. Climb aboard!", {[_this select 0] call dingus_fnc_PassengersBoarding;}, [], 1.5, false, true, "", "vehicle player == player && missionNamespace getVariable [""Boarded"", ""0""] == ""0"""];
+};
+
+dingus_fnc_AddPassengerUnloadAction = {
+  params ["_leader"];
+
+  _leader addAction ["OK! Here we are. Safe and sound.", {[] call dingus_fnc_PassengersUnloading;}, [], 1.5, false, true, "", "vehicle player != player && missionNamespace getVariable [""Arrived"", ""1""] == ""1"""];
+};

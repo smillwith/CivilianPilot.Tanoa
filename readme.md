@@ -15,3 +15,21 @@ TODO:
 
 
 How do I know when the vehicle is moving? How do I know when it's on the ground?
+
+Notes:
+
+What are the different states?
+
+* Flying?
+* Boarding
+* In plane?
+* Has passengers?
+
+Nothing - Taxiing - Nothing
+Boarding - Transporting
+Flying
+Disembarking - Nothing
+
+
+
+http://scottsasha.com/aviation/plans/commshandout.html
