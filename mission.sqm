@@ -8,7 +8,7 @@ class EditorData
 	toggles=1025;
 	class ItemIDProvider
 	{
-		nextID=535;
+		nextID=542;
 	};
 	class MarkerIDProvider
 	{
@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=18;
+		nextID=20;
 	};
 	class Camera
 	{
-		pos[]={6984.9663,33.231979,7382.6138};
-		dir[]={-0.88923043,-0.44193491,-0.11824828};
-		up[]={-0.43808144,0.89704621,-0.058255564};
-		aside[]={-0.13182063,-4.7229696e-007,0.99128526};
+		pos[]={11412.729,318.97229,2933.0833};
+		dir[]={0.95088029,-0.28456512,-0.12204272};
+		up[]={0.28226122,0.95865279,-0.036227651};
+		aside[]={-0.12730359,5.2893301e-007,-0.99188596};
 	};
 };
 binarizationWanted=0;
@@ -315,17 +315,46 @@ class ScenarioData
 	author="$(dingus)";
 	overviewText="Transport passengers to various airports around Tanoa.";
 	overViewPicture="745ts7252512.jpg";
+	briefing=0;
+	debriefing=0;
+};
+class CustomAttributes
+{
+	class Category0
+	{
+		name="Scenario";
+		class Attribute0
+		{
+			property="EnableDebugConsole";
+			expression="true";
+			class Value
+			{
+				class data
+				{
+					class type
+					{
+						type[]=
+						{
+							"SCALAR"
+						};
+					};
+					value=1;
+				};
+			};
+		};
+		nAttributes=1;
+	};
 };
 class Mission
 {
 	class Intel
 	{
-		briefingName="Civilian Pilot Tanoa (Beta)";
+		briefingName="Civilian Pilot Tanoa";
 		timeOfChanges=1800.0002;
-		startWeather=0.67714834;
+		startWeather=0.26395917;
 		startWind=0.1;
 		startWaves=0.1;
-		forecastWeather=0.66871595;
+		forecastWeather=0.26395917;
 		forecastWind=0.1;
 		forecastWaves=0.1;
 		forecastLightnings=0.1;
@@ -333,7 +362,7 @@ class Mission
 		month=4;
 		day=6;
 		hour=17;
-		minute=11;
+		minute=10;
 		startFogBase=250;
 		forecastFogBase=250;
 		startFogDecay=0.014;
@@ -341,7 +370,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=282;
+		items=288;
 		class Item0
 		{
 			dataType="Object";
@@ -2218,7 +2247,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={6868.4443,4.2800722,7314.0278};
-				angles[]={-0,3.8407574,0};
+				angles[]={0,3.8407574,0};
 			};
 			side="Empty";
 			flags=4;
@@ -2813,16 +2842,18 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={6912.6138,3.3495026,7397.6426};
-				angles[]={0,2.0254056,0};
+				position[]={6912.6138,3.3492579,7397.6431};
+				angles[]={0,2.0254021,0};
 			};
 			side="Empty";
 			flags=4;
 			class Attributes
 			{
+				name="infostand1";
 			};
 			id=183;
 			type="Land_InfoStand_V2_F";
+			atlOffset=0.10899997;
 		};
 		class Item87
 		{
@@ -2973,16 +3004,18 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={6920.5,3.3495033,7357.8345};
+				position[]={6920.5,3.3492579,7357.834};
 				angles[]={0,4.788939,0};
 			};
 			side="Empty";
 			flags=4;
 			class Attributes
 			{
+				name="infostand2";
 			};
 			id=206;
 			type="Land_InfoStand_V2_F";
+			atlOffset=0.10899997;
 		};
 		class Item97
 		{
@@ -4276,7 +4309,7 @@ class Mission
 					class PositionInfo
 					{
 						position[]={6849.6323,2.6614389,7334.9023};
-						angles[]={-0,2.2719996,0};
+						angles[]={0,2.2719996,0};
 					};
 					side="Civilian";
 					flags=6;
@@ -4321,7 +4354,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={6849.6323,5.0417042,7334.8525};
-				angles[]={-0,2.2719996,0};
+				angles[]={0,2.2719996,0};
 			};
 			side="Civilian";
 			flags=6;
@@ -4542,7 +4575,7 @@ class Mission
 				class Item2
 				{
 					dataType="Waypoint";
-					position[]={6969.7871,2.6600001,7383.3647};
+					position[]={6970.4326,2.6600001,7383.6147};
 					type="GetOut";
 					class Effects
 					{
@@ -4553,7 +4586,7 @@ class Mission
 				class Item3
 				{
 					dataType="Waypoint";
-					position[]={6979.249,2.6600001,7422.0454};
+					position[]={6976.9126,2.6600001,7423.9771};
 					class Effects
 					{
 					};
@@ -5007,7 +5040,7 @@ class Mission
 		class Item159
 		{
 			dataType="Trigger";
-			position[]={11847.422,8.9899998,13125.76};
+			position[]={11843.42,8.3629999,13111.358};
 			angle=1.8418632;
 			class Attributes
 			{
@@ -5015,9 +5048,9 @@ class Mission
 				condition="this && getPosATL player select 2 < 5";
 				onActivation="[""larochelle"", larochelle_fuel, larochelle_repair] call dingus_fnc_ArrivedAtLocation";
 				onDeactivation="[""larochelle""] call dingus_fnc_DepartedLocation";
-				sizeA=76.422997;
+				sizeA=91.370003;
 				sizeB=428.66299;
-				sizeC=1.04;
+				sizeC=1.6670001;
 				timeout[]={15,15,15};
 				repeatable=1;
 				activationByOwner="MEMBER";
@@ -5025,7 +5058,7 @@ class Mission
 			};
 			id=306;
 			type="EmptyDetectorAreaR250";
-			atlOffset=2.04;
+			atlOffset=1.4130001;
 		};
 		class Item160
 		{
@@ -5035,7 +5068,7 @@ class Mission
 			{
 				text="On Load";
 				condition="true";
-				onActivation="[player] call dingus_fnc_AddPassengerUnloadAction; { [_x] call  dingus_fnc_createPassengerGroup;} forEach [""tanoa"", ""baja"", ""stgeorge"", ""larochelle"", ""tuvanaka""];";
+				onActivation="[player] call dingus_fnc_AddPassengerUnloadAction; { [_x] call  dingus_fnc_createPassengerGroup;} forEach [""tanoa"", ""baja"", ""stgeorge"", ""larochelle"", ""tuvanaka""]; { [_x] call dingus_fnc_initInfoStand; } forEach [infostand1, infostand2, infostand3];";
 				sizeA=0;
 				sizeB=0;
 				timeout[]={2,2,2};
@@ -5661,16 +5694,16 @@ class Mission
 		class Item183
 		{
 			dataType="Trigger";
-			position[]={11586.056,12.721766,3191.657};
+			position[]={11644.813,11.65416,3152.2764};
 			angle=0.61138868;
 			class Attributes
 			{
 				text="Arrived at St-George";
 				onActivation="[""stgeorge"", stgeorge_fuel, stgeorge_repair] call dingus_fnc_ArrivedAtLocation";
 				onDeactivation="[""stgeorge""] call dingus_fnc_DepartedLocation";
-				sizeA=475.302;
-				sizeB=63.654999;
-				sizeC=6.921;
+				sizeA=404.58337;
+				sizeB=93.140991;
+				sizeC=7.988606;
 				timeout[]={15,15,15};
 				repeatable=1;
 				activationByOwner="MEMBER";
@@ -5678,7 +5711,7 @@ class Mission
 			};
 			id=350;
 			type="EmptyDetectorAreaR250";
-			atlOffset=6.256;
+			atlOffset=6.2612262;
 		};
 		class Item184
 		{
@@ -6019,8 +6052,8 @@ class Mission
 		class Item192
 		{
 			dataType="Trigger";
-			position[]={2112.9561,19.726,13250.492};
-			angle=5.5828352;
+			position[]={2112.9561,19.883463,13250.492};
+			angle=5.5828347;
 			class Attributes
 			{
 				text="Arrived at Tuvanaka";
@@ -6028,7 +6061,7 @@ class Mission
 				onDeactivation="[""tuvanaka""] call dingus_fnc_DepartedLocation";
 				sizeA=458.435;
 				sizeB=84.859001;
-				sizeC=6.921;
+				sizeC=6.7635369;
 				timeout[]={15,15,15};
 				repeatable=1;
 				activationByOwner="MEMBER";
@@ -6036,7 +6069,7 @@ class Mission
 			};
 			id=369;
 			type="EmptyDetectorAreaR250";
-			atlOffset=6.276;
+			atlOffset=6.4334631;
 		};
 		class Item193
 		{
@@ -7975,7 +8008,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={11629.266,7.3692012,13134.849};
-				angles[]={-0,5.1164722,0};
+				angles[]={0,5.1164722,0};
 			};
 			side="Empty";
 			flags=4;
@@ -7991,7 +8024,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={11619.07,7.6884365,13135.502};
-				angles[]={-0,3.926991,6.282495};
+				angles[]={0,3.926991,6.282495};
 			};
 			side="Empty";
 			flags=4;
@@ -8024,7 +8057,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={11618.202,7.3692012,13138.484};
-				angles[]={-0,5.1164722,0};
+				angles[]={0,5.1164722,0};
 			};
 			side="Empty";
 			flags=4;
@@ -8096,7 +8129,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={6843.6499,3.1768887,7246.4678};
-				angles[]={-0,3.7557447,6.2826972};
+				angles[]={0,3.7557447,6.2826972};
 			};
 			side="Empty";
 			flags=4;
@@ -8112,7 +8145,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={6857.251,2.6792779,7254.5938};
-				angles[]={-0,2.0923703,6.2826972};
+				angles[]={0,2.0923703,6.2826972};
 			};
 			side="Empty";
 			flags=4;
@@ -8129,7 +8162,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={6825.231,3.3920729,7260.0962};
-				angles[]={-0,4.3576512,6.2826972};
+				angles[]={0,4.3576512,6.2826972};
 			};
 			side="Empty";
 			flags=4;
@@ -8145,7 +8178,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={6825.0425,2.8545742,7260.4561};
-				angles[]={-0,0.28609875,6.2826972};
+				angles[]={0,0.28609875,6.2826972};
 			};
 			side="Empty";
 			flags=4;
@@ -8178,7 +8211,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={6840.6729,3.4180508,7279.2207};
-				angles[]={-0,2.2273176,6.2826972};
+				angles[]={0,2.2273176,6.2826972};
 			};
 			side="Empty";
 			flags=4;
@@ -8195,7 +8228,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={6834.5903,3.2323809,7271.8496};
-				angles[]={-0,1.8751276,6.2826972};
+				angles[]={0,1.8751276,6.2826972};
 			};
 			side="Empty";
 			flags=4;
@@ -8212,7 +8245,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={6848.374,3.1074069,7243.7612};
-				angles[]={-0,0.71623713,6.2826972};
+				angles[]={0,0.71623713,6.2826972};
 			};
 			side="Empty";
 			flags=4;
@@ -8221,6 +8254,134 @@ class Mission
 			};
 			id=534;
 			type="Land_Pallets_stack_F";
+		};
+		class Item282
+		{
+			dataType="Marker";
+			position[]={3081.5234,0,3792.4436};
+			name="marker_8";
+			text="Baja Runway 21";
+			type="hd_arrow";
+			colorName="ColorBlack";
+			alpha=0.78676963;
+			angle=264.66281;
+			id=535;
+			atlOffset=5.1521888;
+		};
+		class Item283
+		{
+			dataType="Marker";
+			position[]={1272.694,0,3278.115};
+			name="marker_11";
+			text="Baja Runway 5";
+			type="hd_arrow";
+			colorName="ColorBlack";
+			alpha=0.78676963;
+			angle=82.431961;
+			id=536;
+			atlOffset=15.788974;
+		};
+		class Item284
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={2113.759,13.525364,3433.3779};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				name="infostand3";
+			};
+			id=537;
+			type="Land_InfoStand_V1_F";
+		};
+		class Item285
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={11713.852,5.7738132,3024.698};
+				angles[]={0,2.4169536,0};
+			};
+			side="Empty";
+			flags=5;
+			class Attributes
+			{
+			};
+			id=538;
+			type="Land_PortableLight_double_F";
+		};
+		class Item286
+		{
+			dataType="Group";
+			side="Civilian";
+			class Entities
+			{
+				items=1;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={11695.08,8.2925739,3028.0088};
+						angles[]={0,0.79038978,0};
+					};
+					side="Civilian";
+					flags=7;
+					class Attributes
+					{
+						name="atc_tanoa2_1";
+					};
+					id=540;
+					type="C_Man_casual_3_F_afro";
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="pitch";
+							expression="_this setpitch _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"SCALAR"
+										};
+									};
+									value=0.98000002;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+			};
+			class Attributes
+			{
+			};
+			id=539;
+		};
+		class Item287
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={11677.447,5.7738128,3035.9143};
+				angles[]={0,4.3531227,0};
+			};
+			side="Empty";
+			flags=5;
+			class Attributes
+			{
+			};
+			id=541;
+			type="Land_PortableLight_single_F";
+			atlOffset=-4.7683716e-007;
 		};
 	};
 	class Connections

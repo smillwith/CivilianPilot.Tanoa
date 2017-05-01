@@ -38,6 +38,7 @@ dingus_fnc_requestRefuel = {
   _truck = ["CurrentFuelTruck"] call dingus_fnc_getVar;
   if (!isNil "_truck") then {
     _wp = (group (driver _truck)) addWaypoint [position vehicle player, 4];
+    ["Request acknowledged. Please stand by..."] call dingus_fnc_Alert;
   } else {
     systemChat "Can't set waypoint no truck."
   };
@@ -57,6 +58,7 @@ dingus_fnc_requestRepair = {
   _truck = ["CurrentRepairTruck"] call dingus_fnc_getVar;
   if (!isNil "_truck") then {
     _wp = (group (driver _truck)) addWaypoint [position vehicle player, 4];
+    ["Request acknowledged. Please stand by..."] call dingus_fnc_Alert;
   } else {
     systemChat "Can't set waypoint no truck 2."
   };
