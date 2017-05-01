@@ -71,6 +71,13 @@ dingus_fnc_OnPassengersLoaded = {
   _taskTitle = "Arrive at " + _name;
   _taskDescription = "Transport your passengers to " + _name + ".";
 
+  _markerForTask = _marker;
+
+  //If markers are turned off, then don't use a marker
+  if (["TaskLocations", "1"] call dingus_fnc_getVar == "0") then {
+    _markerForTask = [];
+  };
+
   //taskCreate - Other style
   //0: BOOL or OBJECT or GROUP or SIDE or ARRAY - Task owner(s)
   //1: STRING or ARRAY - Task name or array in the format [task name, parent task name]
@@ -84,8 +91,8 @@ dingus_fnc_OnPassengersLoaded = {
   [
     player,
     _taskName,
-    [_taskDescription, _taskTitle, "_marker"],
-    _marker,
+    [_taskDescription, _taskTitle, "x"],
+    _markerForTask,
     true,
     1,
     true,

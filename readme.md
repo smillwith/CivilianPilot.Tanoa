@@ -43,7 +43,7 @@ That change as you arrive at different airports and/or interact with passengers.
 
 As you change planes/vehicles, CurrentPlane is changed. So technically you could 'drive' people to their destinations
 
-------
+-----
 
 Sample workflow:
 
@@ -58,7 +58,7 @@ Sample workflow:
  - Boarded = 0
  - Nothing
 
-------
+-----
 
 Future considerations:
 
@@ -72,6 +72,6 @@ Future considerations:
 * Scrambling jets in the restricted airspace
 
 
-------
+-----
 
 http://scottsasha.com/aviation/plans/commshandout.html

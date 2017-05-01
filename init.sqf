@@ -2,7 +2,8 @@ _handle = execVM "common.sqf";
 waitUntil { scriptDone _handle };
 
 ["HelpersVisible", "0"] call dingus_fnc_setVar;
-["MarkersVisible", "0"] call dingus_fnc_setVar;
+["MarkersVisible", "1"] call dingus_fnc_setVar;
+["TaskLocations", "1"] call dingus_fnc_setVar;
 
 ["Boarding", "0"] call dingus_fnc_setVar;
 ["Boarded", "0"] call dingus_fnc_setVar;

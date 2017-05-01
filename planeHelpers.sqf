@@ -24,8 +24,8 @@ dingus_fnc_PlayerVehicleChanged = {
   };
 };
 
-player addAction [["Landing Aids On"] call dingus_fnc_formatActionLabel, {[] call dingus_fnc_enableLandingAids;}, [], 45, false, true, "", "([""HelpersVisible"", ""0""] call dingus_fnc_getVar) == ""0"""];
-player addAction [["Landing Aids Off"] call dingus_fnc_formatActionLabel, {[] call dingus_fnc_disableLandingAids;}, [], 45, false, true, "", "([""HelpersVisible"", ""0""] call dingus_fnc_getVar) == ""1"""];
+player addAction [["Landing Aids On"] call dingus_fnc_formatActionLabel, {[] call dingus_fnc_enableLandingAids;}, [], 0.45, false, true, "", "([""HelpersVisible"", ""0""] call dingus_fnc_getVar) == ""0"""];
+player addAction [["Landing Aids Off"] call dingus_fnc_formatActionLabel, {[] call dingus_fnc_disableLandingAids;}, [], 0.45, false, true, "", "([""HelpersVisible"", ""0""] call dingus_fnc_getVar) == ""1"""];
 
 /*
 --------------------------------------------------------------------------
