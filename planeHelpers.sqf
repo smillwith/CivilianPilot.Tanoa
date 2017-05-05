@@ -24,9 +24,6 @@ dingus_fnc_PlayerVehicleChanged = {
   };
 };
 
-player addAction [["Landing Aids On"] call dingus_fnc_formatActionLabel, {[] call dingus_fnc_enableLandingAids;}, [], 0.45, false, true, "", "([""HelpersVisible"", ""0""] call dingus_fnc_getVar) == ""0"""];
-player addAction [["Landing Aids Off"] call dingus_fnc_formatActionLabel, {[] call dingus_fnc_disableLandingAids;}, [], 0.45, false, true, "", "([""HelpersVisible"", ""0""] call dingus_fnc_getVar) == ""1"""];
-
 /*
 --------------------------------------------------------------------------
  Refuel / Repair
@@ -37,14 +34,15 @@ player addAction [["Landing Aids Off"] call dingus_fnc_formatActionLabel, {[] ca
 dingus_fnc_requestRefuel = {
   _truck = ["CurrentFuelTruck"] call dingus_fnc_getVar;
   if (!isNil "_truck") then {
-    _wp = (group (driver _truck)) addWaypoint [position vehicle player, 4];
-    ["Request acknowledged. Please stand by..."] call dingus_fnc_Alert;
+    _wp = (group (driver _truck)) addWaypoint [position vehicle player, 3];
+    _wp setWaypointSpeed "LIMITED";
+    ["Refuel request acknowledged. Please stand by..."] call dingus_fnc_Alert;
   } else {
-    systemChat "Can't set waypoint no truck."
+    systemChat "Can't set waypoint: no truck."
   };
 };
 
-//In a vehicle, at a known airport, fuel level less than 40%
+//In a vehicle, at a known airport, fuel level less than or equal to 40%
 dingus_fnc_canRefuel = {
   _veh = vehicle player;
   _fuel = fuel _veh;
@@ -57,19 +55,20 @@ dingus_fnc_canRefuel = {
 dingus_fnc_requestRepair = {
   _truck = ["CurrentRepairTruck"] call dingus_fnc_getVar;
   if (!isNil "_truck") then {
-    _wp = (group (driver _truck)) addWaypoint [position vehicle player, 4];
-    ["Request acknowledged. Please stand by..."] call dingus_fnc_Alert;
+    _wp = (group (driver _truck)) addWaypoint [position vehicle player, 3];
+    _wp setWaypointSpeed "LIMITED";
+    ["Repair request acknowledged. Please stand by..."] call dingus_fnc_Alert;
   } else {
-    systemChat "Can't set waypoint no truck 2."
+    systemChat "Can't set waypoint: no truck 2."
   };
 };
 
-//In a vehicle, with a valid truck, damage level any
+//In a vehicle, with a valid truck, damage level greater than 0.01
 dingus_fnc_canRepair = {
   _veh = vehicle player;
   _dam = damage _veh;
   _truck = ["CurrentRepairTruck", nil] call dingus_fnc_getVar;
-  _ret = ((vehicle player != player) && (!isNil "_truck") && (_dam > 0.01));
+  _ret = ((vehicle player != player) && (!isNil {_truck}) && (_dam > 0.01));
   _ret;
 };
 

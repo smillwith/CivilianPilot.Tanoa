@@ -1,3 +1,5 @@
+titleText ["Please wait...", "BLACK OUT", 0];
+
 _handle = execVM "common.sqf"; 
 waitUntil { scriptDone _handle };
 
@@ -11,20 +13,23 @@ waitUntil { scriptDone _handle };
 ["Arrived", "0"] call dingus_fnc_setVar;
 
 //asdf
-//["CurrentAirport", "tanoa"] call dingus_fnc_setVar;
 //["CurrentFuelTruck", tanoa_fuel] call dingus_fnc_setVar;
 //["CurrentRepairTruck", tanoa_repair] call dingus_fnc_setVar;
 
+//This is important to keep for now
+["CurrentAirport", "tanoa"] call dingus_fnc_setVar;
+
 ["DestinationAirport", ""] call dingus_fnc_setVar;
 
-//This is just for testing mainly
+//Default vehicle
 ["CurrentPlane", plane1a] call dingus_fnc_setVar;
 
-//["CurrentTask", ""] call dingus_fnc_setVar;
-//["CurrentPassengerGroup", ""] call dingus_fnc_setVar;
 ["CurrentPassenger", nil] call dingus_fnc_setVar;
+["CurrentCompanion", nil] call dingus_fnc_setVar;
 
-
+execVM "atis.sqf";
+execVM "companion.sqf";
 execVM "passengers.sqf";
-execVM "planeHelpers.sqf"
+execVM "planeHelpers.sqf";
 
+titleFadeOut 5;

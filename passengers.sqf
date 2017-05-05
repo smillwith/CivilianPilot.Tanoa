@@ -1,13 +1,17 @@
 dingus_fnc_PassengersBoarding = {
   params ["_unit", "_code"];
 
-  if (isNil "_code") then {
-    _code = ["CurrentAirport", ""] call dingus_fnc_getVar;;
+
+
+  //Only use 'code' param if it is given and if it is the same as the current airport. Otherwise, current airport takes precedence.
+  if (isNil "_code" || _code != (["CurrentAirport", ""] call dingus_fnc_getVar)) then {
+    //systemChat 'Using current code instead';
+    _code = ["CurrentAirport", ""] call dingus_fnc_getVar;
   };
 
   _vehicle = ["CurrentPlane"] call dingus_fnc_getVar;
 
-  if (!isNil "_vehicle") then {
+  if (!isNil {_vehicle}) then {
     ["Boarding", "1"] call dingus_fnc_setVar;
 
     {
@@ -109,8 +113,8 @@ dingus_fnc_DepartedLocation = {
 
   //When we leave an airport, we clear the name and other vitals
   ["CurrentAirport", ""] call dingus_fnc_setVar;
-  ["CurrentFuelTruck", ""] call dingus_fnc_setVar;
-  ["CurrentRepairTruck", ""] call dingus_fnc_setVar;
+  ["CurrentFuelTruck", nil] call dingus_fnc_setVar;
+  ["CurrentRepairTruck", nil] call dingus_fnc_setVar;
 
   //Re-spawn the passenger group for this location
   [_code] call  dingus_fnc_createPassengerGroup;;
@@ -158,13 +162,8 @@ dingus_fnc_PassengersUnloading = {
   //TODO: get the passengers(s) in a better way
   _passenger = ["CurrentPassenger"] call dingus_fnc_getVar;
 
-  if (!isNil "_passenger") then {
+  if (!isNil {_passenger}) then {
     //Flight's over. Get out. Then...Send them away to a grave or something?
-    //{
-      //They always get back in
-      //doGetOut _x;
-
-    //} forEach units group _passenger;
     (group _passenger) leaveVehicle (vehicle _passenger);
 
     //Send them to a known marker at the current airport
@@ -179,7 +178,7 @@ dingus_fnc_PassengersUnloading = {
 dingus_fnc_createPassengerGroup = {
   params ["_code"];
  
-  _models = ["C_man_1", "C_man_p_beggar_F"];
+  _models = ["C_Man_casual_1_F_tanoan", "C_man_sport_1_F_afro", "C_Man_casual_1_F_asia", "C_man_1", "C_man_p_beggar_F"];
   _marker = _code + "_departures";
   _markerRunway =  "m_airport_" + _code;
   _group = createGroup [civilian, true];
@@ -219,7 +218,7 @@ dingus_fnc_ApplyPassengerLoadout = {
   //removeHeadgear _unit;
   //removeGoggles _unit;
 
-  _uniforms = ["U_NikosAgedBody", "U_Marshal", "U_C_Journalist", "U_C_Man_casual_1_F", "U_C_Poloshirt_salmon"];
+  _uniforms = ["U_NikosAgedBody", "U_Marshal", "U_C_Journalist", "U_C_Man_casual_1_F", "U_C_Poloshirt_salmon", "U_IG_Guerilla1_1", "U_IG_Guerilla2_1", "U_IG_Guerilla2_2", "U_IG_Guerilla2_3", "U_IG_Guerilla3_1", "U_IG_Guerilla3_2", "U_IG_leader"];
 
   //Get random uni
   _uniform = _uniforms select floor random count _uniforms;
@@ -241,8 +240,7 @@ dingus_fnc_PassengersCanBoard = {
 dingus_fnc_AddPassengerBoardingAction = {
   params ["_leader", "_code"];
 
-  //don't format this label
-  _label = "Hello, I'm Dave, your pilot. Climb aboard!";
+  _label = ["Hello, I'm Dave, your pilot. Climb aboard!"] call dingus_fnc_formatActionLabel;
 
   switch (_code) do {
     case "tanoa": {
