@@ -12,10 +12,6 @@ waitUntil { scriptDone _handle };
 ["Transporting", "0"] call dingus_fnc_setVar;
 ["Arrived", "0"] call dingus_fnc_setVar;
 
-//asdf
-//["CurrentFuelTruck", tanoa_fuel] call dingus_fnc_setVar;
-//["CurrentRepairTruck", tanoa_repair] call dingus_fnc_setVar;
-
 //This is important to keep for now
 ["CurrentAirport", "tanoa"] call dingus_fnc_setVar;
 

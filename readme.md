@@ -8,18 +8,14 @@ Arrive at the airport. Reach your aircraft. Refuel if needed. Taxi to the depart
 
 TODO: 
 
-1. Add Tasks for Taxiing to/from runway
-2. Add 'repair complete' and 'fuel complete' events to return trucks to their markers
-3. Make the passengers disappear after you leave the airport
-4. Implement basic ATIS with Wind information
-5. Finish the landing aids
-6. Toggle map details
-7. Make all hangars look like the ones at (La Rochelle?)
-8. Update Baja slightly
-9. Add more ambiance (in what way?)
-10. Implement custom/dynamic weather that you can change or that is set on mission start
-11. Implement dynamic date/time
-12. Add a toggle to hide task locations
+* Add Tasks for Taxiing to/from runway
+* Add 'repair complete' and 'fuel complete' events to return trucks to their markers
+* Implement basic ATIS with Wind information
+* Toggle map details
+* Make all hangars look like the ones at (La Rochelle?)
+* Add more ambiance (in what way?)
+* Implement RANDOM date/time
+* Implement RANDOM start location
 
 Notes:
 

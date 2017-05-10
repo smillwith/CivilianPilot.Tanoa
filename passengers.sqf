@@ -1,8 +1,6 @@
 dingus_fnc_PassengersBoarding = {
   params ["_unit", "_code"];
 
-
-
   //Only use 'code' param if it is given and if it is the same as the current airport. Otherwise, current airport takes precedence.
   if (isNil "_code" || _code != (["CurrentAirport", ""] call dingus_fnc_getVar)) then {
     //systemChat 'Using current code instead';
@@ -26,6 +24,14 @@ dingus_fnc_PassengersBoarding = {
     [_code] call dingus_fnc_OnPassengersLoaded;
 
     ["CurrentPassenger", _unit] call dingus_fnc_setVar;
+
+    //Safety check - if you just picked up the same passenger again, make sure we don't delete them when we leave the airport
+    if ([format ["LastPassenger%1", _code], nil] call dingus_fnc_getVar == _unit) then {
+      //systemChat "Clearing previous passenger";
+      [format ["LastPassenger%1", _code], nil] call dingus_fnc_setVar;
+    } else {
+      //systemChat "Previous passenger safe to delete.";
+    };
   };
 };
 
@@ -52,7 +58,6 @@ dingus_fnc_OnPassengersLoaded = {
     _loc = getMarkerPos _marker;
     
     //Validate that the code isn't the same as the currently selected or supplied airport code
-    //systemChat format ["Does %1 == %2", _code, _currentCode];
     if (_code != _currentCode) then {
       //Found a unique one
       _found = true;
@@ -64,6 +69,7 @@ dingus_fnc_OnPassengersLoaded = {
   ["Boarding", "0"] call dingus_fnc_setVar;
   ["Boarded", "1"] call dingus_fnc_setVar;
   ["DestinationAirport", _code] call dingus_fnc_setVar;
+  [format ["NextPassenger%1", _currentCode], nil] call dingus_fnc_setVar;
 
   //Get a new task index
   _tasks = [player] call BIS_fnc_tasksUnit;
@@ -111,13 +117,33 @@ dingus_fnc_OnPassengersLoaded = {
 dingus_fnc_DepartedLocation = {
   params ["_code"];
 
+  //systemChat format ["Just Departed %1", _code];
+
   //When we leave an airport, we clear the name and other vitals
   ["CurrentAirport", ""] call dingus_fnc_setVar;
   ["CurrentFuelTruck", nil] call dingus_fnc_setVar;
   ["CurrentRepairTruck", nil] call dingus_fnc_setVar;
 
   //Re-spawn the passenger group for this location
-  [_code] call  dingus_fnc_createPassengerGroup;;
+  _existing = [format ["NextPassenger%1", _code], nil] call dingus_fnc_getVar;
+  if (isNil "_existing") then {
+    //systemChat 'spawning new group';
+    [_code] call  dingus_fnc_createPassengerGroup;
+  } else {
+    //systemChat 'group already exists';
+  };
+
+  //Delete previous passenger
+  _previous = [format ["LastPassenger%1", _code], nil] call dingus_fnc_getVar;
+  if (!isNil "_previous" && (vehicle _previous == _previous)) then {
+    //systemChat 'deleting last passengers';
+    _grp = group _previous;
+    { deleteVehicle _x; } forEach units _grp;
+    deleteGroup _grp;
+    [format ["LastPassenger%1", _code], nil] call dingus_fnc_setVar;
+  } else {
+    //systemChat 'No units to delete';
+  };
 };
 
 
@@ -170,6 +196,8 @@ dingus_fnc_PassengersUnloading = {
     _code = ["CurrentAirport", ""] call dingus_fnc_getVar;
     _marker = _code + "_arrivals";
     _wp = (group _passenger) addWaypoint [getMarkerPos _marker, 0];
+
+    [format ["LastPassenger%1", _code], _passenger] call dingus_fnc_setVar;
   };
 
   ["CurrentPassenger", nil] call dingus_fnc_setVar;
@@ -204,6 +232,9 @@ dingus_fnc_createPassengerGroup = {
 
   //Add action to leader
   [_leader, _code] call dingus_fnc_AddPassengerBoardingAction;
+
+  //Save this passenger in vars
+  [format ["NextPassenger%1", _code], _leader] call dingus_fnc_setVar;
 };
 
 dingus_fnc_ApplyPassengerLoadout = {

@@ -14,17 +14,11 @@ dingus_fnc_getVar = {
 
 dingus_fnc_setVar = {
   params ["_k", "_v"];
-  //if (isNil "_k") then { _k = 'nil'; };
-  //if (isNil "_v") then { _v = 'nil'; };
-  //systemChat format ["Setting key: %1", _k];
-  //systemChat format ["Setting value: %1", _v];
-  
   if (isNil "_v") then {
     missionNamespace setVariable [_k, nil];
   } else {
     missionNamespace setVariable [_k, _v];
   };
-  
 };
 
 /*
@@ -33,6 +27,7 @@ dingus_fnc_setVar = {
 -------------------------------------------
 */
 
+//TODO: Finish this method designed to copy markers into a var for later use
 dingus_fnc_initMapMarkers = {
   //get them all
   {
@@ -55,6 +50,7 @@ dingus_fnc_initInfoStand = {
   params ["_item"];
 
   _item addAction ["Skip Time: 1 Hour", {[] call dingus_fnc_SkipTime;}, [], 45, false, true, "", ""];
+  _item addAction ["Skip Time: 8 Hours", {[] call dingus_fnc_SkipTime8;}, [], 45, false, true, "", ""];
   
   _item addAction ["Weather: Clear", {[] call dingus_fnc_SetClear;}, [], 45, false, true, "", "((rain > 0) || (overcast > 0.10))"];
   _item addAction ["Weather: Cloudy", {[] call dingus_fnc_SetCloudy;}, [], 45, false, true, "", "overcast < 0.5"];
@@ -79,6 +75,10 @@ dingus_fnc_ToggleLocationMarkers = {
 
 dingus_fnc_SkipTime = {
   skipTime 1;
+};
+
+dingus_fnc_SkipTime8 = {
+  skipTime 8;
 };
 
 dingus_fnc_SetRainy = {
@@ -113,7 +113,3 @@ dingus_fnc_formatActionLabel = {
   _label = "<t color='#228A37'>" + _text + "</t>";
   _label;
 };
-
-
-//true;
-
