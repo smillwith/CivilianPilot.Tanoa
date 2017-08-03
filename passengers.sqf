@@ -1,3 +1,41 @@
+//[this] spawn { params ["_unit"]; sleep 4; [_unit] call dingus_fnc_playerInit; };
+//[this] call dingus_fnc_playerInit;
+dingus_fnc_playerInit = {
+  params ["_unit"];
+
+  sleep 6;
+
+  _taskIndex = 0;
+  _taskName = format ["task%1", _taskIndex];
+  _taskTitle = "Select a plane or chopper to get started!";
+  _taskDescription = "Select a plane or helicopter to use by entering it.";
+  _markerForTask = "";
+
+  //taskCreate - Other style
+  //0: BOOL or OBJECT or GROUP or SIDE or ARRAY - Task owner(s)
+  //1: STRING or ARRAY - Task name or array in the format [task name, parent task name]
+  //2: ARRAY or STRING - Task description in the format ["description", "title", "marker"] or CfgTaskDescriptions class
+  //3: OBJECT or ARRAY or STRING - Task destination
+  //4: BOOL or NUMBER or STRING - Task state (or true to set as current)
+  //5: NUMBER - Task priority (when automatically selecting a new current task, higher priority is selected first)
+  //6: BOOL - Show notification (default: true)
+  //7: STRING - Task type as defined in the CfgTaskTypes
+  //8: BOOL - Should the task being shared (default: false), if set to true, the assigned players are being counted
+  [
+    _unit,
+    _taskName,
+    [_taskDescription, _taskTitle, "x"],
+    [],
+    true,    //state
+    1,       //priority
+    true,    //show notif
+    "interact",  //Task type
+    false    //shared
+  ] call BIS_fnc_taskCreate;
+
+  ["OnBoarding", "1"] call dingus_fnc_setVar;
+};
+
 dingus_fnc_PassengersBoarding = {
   params ["_unit", "_code"];
 
@@ -33,6 +71,14 @@ dingus_fnc_PassengersBoarding = {
       //systemChat "Previous passenger safe to delete.";
     };
   };
+
+  [_code] spawn {
+    params ["_code"];
+    sleep 3;
+    systemChat format ["Spawning at code: ", _code];
+    [_code] call dingus_fnc_createPassengerGroup;
+  };
+
 };
 
 //TODO: We should actually call this from a trigger
@@ -117,32 +163,41 @@ dingus_fnc_OnPassengersLoaded = {
 dingus_fnc_DepartedLocation = {
   params ["_code"];
 
-  //systemChat format ["Just Departed %1", _code];
+  //systemChat format ["Someone just Departed %1", _code];
 
-  //When we leave an airport, we clear the name and other vitals
-  ["CurrentAirport", ""] call dingus_fnc_setVar;
-  ["CurrentFuelTruck", nil] call dingus_fnc_setVar;
-  ["CurrentRepairTruck", nil] call dingus_fnc_setVar;
+  //New logic - if you are flying and you are reporting that you are at the airport that 'someone' just left, we have to assume that YOU just left.
+  _flying = (getPosATL player select 2 < 25);  //you are 25 meters or more above the land
+  _currentAirport = ["CurrentAirport", ""] call dingus_fnc_getVar;
 
-  //Re-spawn the passenger group for this location
-  _existing = [format ["NextPassenger%1", _code], nil] call dingus_fnc_getVar;
-  if (isNil "_existing") then {
-    //systemChat 'spawning new group';
-    [_code] call  dingus_fnc_createPassengerGroup;
-  } else {
-    //systemChat 'group already exists';
-  };
+  if (_flying && _currentAirport == _code) then {
+    //When we leave an airport, we clear the name and other vitals
+    ["CurrentAirport", ""] call dingus_fnc_setVar;
+    ["CurrentFuelTruck", nil] call dingus_fnc_setVar;
+    ["CurrentRepairTruck", nil] call dingus_fnc_setVar;
 
-  //Delete previous passenger
-  _previous = [format ["LastPassenger%1", _code], nil] call dingus_fnc_getVar;
-  if (!isNil "_previous" && (vehicle _previous == _previous)) then {
-    //systemChat 'deleting last passengers';
-    _grp = group _previous;
-    { deleteVehicle _x; } forEach units _grp;
-    deleteGroup _grp;
-    [format ["LastPassenger%1", _code], nil] call dingus_fnc_setVar;
-  } else {
-    //systemChat 'No units to delete';
+    player setVariable ["ATCMode", "flying"];
+
+    //Re-spawn the passenger group for this location
+    _existing = [format ["NextPassenger%1", _code], nil] call dingus_fnc_getVar;
+    if (isNil "_existing") then {
+      //Disable this in multiplayer
+      //systemChat 'spawning new group';
+      //[_code] call  dingus_fnc_createPassengerGroup;
+    } else {
+      //systemChat 'group already exists';
+    };
+
+    //Delete previous passenger
+    _previous = [format ["LastPassenger%1", _code], nil] call dingus_fnc_getVar;
+    if (!isNil "_previous" && (vehicle _previous == _previous)) then {
+      //systemChat 'deleting last passengers';
+      _grp = group _previous;
+      { deleteVehicle _x; } forEach units _grp;
+      deleteGroup _grp;
+      [format ["LastPassenger%1", _code], nil] call dingus_fnc_setVar;
+    } else {
+      //systemChat 'No units to delete';
+    };
   };
 };
 
@@ -156,17 +211,32 @@ dingus_fnc_PlaneLanded = {
 };
 
 dingus_fnc_ArrivedAtLocation = {
-  params ["_code", "_fuelTruck", "_repairTruck"];
+  params ["_code", "_fuelTruck", "_repairTruck", "_list"];
   
-  ["CurrentAirport", _code] call dingus_fnc_setVar;
-  ["CurrentFuelTruck", _fuelTruck] call dingus_fnc_setVar;
-  ["CurrentRepairTruck", _repairTruck] call dingus_fnc_setVar;
+  _exists = false;
 
-  //When we land at an airport
-  //TODO: Make sure we're at the correct airport and they are still alive!
-  _destinationAirport = ["DestinationAirport", ""] call dingus_fnc_getVar;
-  if (_code == _destinationAirport) then {
-    [] call dingus_fnc_PassengersArrived;
+  if (!isNil "_list") then {
+    {
+      if (isPlayer _x) then {
+        _exists = true;
+      };
+
+    } forEach _list;
+  };
+
+  //Only do this when the PLAYER arrives
+  if (_exists) then {
+    ["CurrentAirport", _code] call dingus_fnc_setVar;
+    ["CurrentFuelTruck", _fuelTruck] call dingus_fnc_setVar;
+    ["CurrentRepairTruck", _repairTruck] call dingus_fnc_setVar;
+
+    player setVariable ["ATCMode", ""];
+
+    //TODO: Make sure we're at the correct airport and they are still alive!
+    _destinationAirport = ["DestinationAirport", ""] call dingus_fnc_getVar;
+    if (_code == _destinationAirport) then {
+      [] call dingus_fnc_PassengersArrived;
+    };
   };
 };
 
@@ -212,8 +282,8 @@ dingus_fnc_createPassengerGroup = {
   _group = createGroup [civilian, true];
 
   //Set formation
-  _group setFormation "COLUMN";
-  _group setBehaviour "CARELESS";
+  _group setFormation "FILE";
+  //_group setBehaviour "CARELESS";
 
   //Create leader
   _leader = _group createUnit [_models select floor random count _models, (getMarkerPos _marker), [], 0.5, "FORM"];
@@ -265,13 +335,25 @@ dingus_fnc_ApplyPassengerLoadout = {
 /* Action Helpers */
 
 dingus_fnc_PassengersCanBoard = {
-  (vehicle player == player && ((["Boarded", "0"] call dingus_fnc_getVar) == "0"));
+  _plane = ["CurrentPlane"] call dingus_fnc_getVar;
+  if (isNil {_plane}) then {
+    false;
+  } else {
+    (vehicle player == player && ((["Boarded", "0"] call dingus_fnc_getVar) == "0"));
+  };
 };
 
 dingus_fnc_AddPassengerBoardingAction = {
   params ["_leader", "_code"];
 
-  _label = ["Hello, I'm Dave, your pilot. Climb aboard!"] call dingus_fnc_formatActionLabel;
+  _greetings = [
+    "Hello, I'm your pilot. Are you ready to go?",
+    "Hey there! I'm your pilot. Are you ready to get going?",
+    "I'm your pilot, climb on in!",
+    "Hello, I'm, your pilot. Climb aboard!"
+  ];
+
+  _label = [_greetings select floor random count _greetings] call dingus_fnc_formatActionLabel;
 
   switch (_code) do {
     case "tanoa": {

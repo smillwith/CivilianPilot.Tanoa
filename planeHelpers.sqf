@@ -5,12 +5,12 @@
 */
 
 dingus_fnc_enableLandingAids = {
-  ["HelpersVisible", "1"] call dingus_fnc_setVar;
+  ["HelpersVisible", "1"] call dingus_fnc_setGlobalVar;
   ["Landing aids enabled."] call dingus_fnc_Alert;
 };
 
 dingus_fnc_disableLandingAids = {
-  ["HelpersVisible", "0"] call dingus_fnc_setVar;
+  ["HelpersVisible", "0"] call dingus_fnc_setGlobalVar;
   ["Landing aids disabled."] call dingus_fnc_Alert;
 };
 
@@ -18,8 +18,20 @@ dingus_fnc_PlayerVehicleChanged = {
   _veh = vehicle player;
 
   if (_veh == player) then {
-    ["CurrentPlane", nil] call dingus_fnc_setVar;  
+    ["CurrentPlane", nil] call dingus_fnc_setVar;
   } else {
+
+    // Set the task complete if it's here
+    _tasks = [player] call BIS_fnc_tasksUnit;
+
+    {
+      _isOb = ["OnBoarding", "0"] call dingus_fnc_getVar;
+      if (_isOb == "1" && _x == "task0") then {
+        //systemChat "setting complete";
+        [_x, "SUCCEEDED", true] call BIS_fnc_taskSetState;
+      }
+    } forEach _tasks;
+
     ["CurrentPlane", vehicle player] call dingus_fnc_setVar;
   };
 };
@@ -30,12 +42,29 @@ dingus_fnc_PlayerVehicleChanged = {
 --------------------------------------------------------------------------
 */
 
+dingus_fnc_ServiceMe = {
+  params ["_vehicle"];
+
+  _startingPos = getPos _vehicle;
+
+  //Enable AI
+  driver _vehicle enableAI "move";
+
+  //Come to me and wait
+  _wp = (group (driver _vehicle)) addWaypoint [position vehicle player, 3];
+  _wp setWaypointSpeed "LIMITED";
+  _wp setWaypointTimeout [20, 20, 20];
+
+  //Come back to where you started
+  _wp = (group (driver _vehicle)) addWaypoint [_startingPos, 0];
+  _wp setWaypointStatements ["true", "driver _vehicle disableAI 'move';"];
+};
+
 //Request Refuel
 dingus_fnc_requestRefuel = {
   _truck = ["CurrentFuelTruck"] call dingus_fnc_getVar;
   if (!isNil "_truck") then {
-    _wp = (group (driver _truck)) addWaypoint [position vehicle player, 3];
-    _wp setWaypointSpeed "LIMITED";
+    [_truck] call dingus_fnc_ServiceMe;
     ["Refuel request acknowledged. Please stand by..."] call dingus_fnc_Alert;
   } else {
     systemChat "Can't set waypoint: no truck."
@@ -55,8 +84,7 @@ dingus_fnc_canRefuel = {
 dingus_fnc_requestRepair = {
   _truck = ["CurrentRepairTruck"] call dingus_fnc_getVar;
   if (!isNil "_truck") then {
-    _wp = (group (driver _truck)) addWaypoint [position vehicle player, 3];
-    _wp setWaypointSpeed "LIMITED";
+    [_truck] call dingus_fnc_ServiceMe;
     ["Repair request acknowledged. Please stand by..."] call dingus_fnc_Alert;
   } else {
     systemChat "Can't set waypoint: no truck 2."
