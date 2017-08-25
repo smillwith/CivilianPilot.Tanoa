@@ -1,4 +1,4 @@
-//titleText ["Please wait...", "BLACK OUT", 0];
+titleText ["Please wait...", "BLACK OUT", 0];
 
 _handle = execVM "common.sqf"; 
 waitUntil { scriptDone _handle };
@@ -17,24 +17,15 @@ waitUntil { scriptDone _handle };
 ["CurrentPassenger", nil] call dingus_fnc_setVar;
 ["CurrentCompanion", nil] call dingus_fnc_setVar;
 ["OnBoarding", "0"] call dingus_fnc_setVar;
+["CurrentPlane", plane0] call dingus_fnc_setVar;
 
-//Disable in mp
-if ([] call dingus_fnc_SinglePlayer) then {
-  _handle2 = execVM "atc.sqf";
-  waitUntil { scriptDone _handle2 };
-  [] call dingus_fnc_atc_init;
+_handle2 = execVM "atc.sqf";
+waitUntil { scriptDone _handle2 };
+[] call dingus_fnc_atc_init;
 
-  //TODO: Disable in MP
-  execVM "atis.sqf";
-};
-
-//TODO: Server only?
-if (isServer) then {
-  execVM "ai.sqf";
-  execVM "passengers.sqf";
-}
-//end
-
+execVM "atis.sqf";
+execVM "ai.sqf";
+execVM "passengers.sqf";
 execVM "companion.sqf";
 execVM "planeHelpers.sqf";
 
@@ -43,4 +34,4 @@ execVM "planeHelpers.sqf";
   titleFadeOut 5;
 };*/
 
-//titleFadeOut 5;
+titleFadeOut 5;

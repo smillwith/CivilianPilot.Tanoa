@@ -28,7 +28,7 @@ dingus_fnc_PlayerVehicleChanged = {
       _isOb = ["OnBoarding", "0"] call dingus_fnc_getVar;
       if (_isOb == "1" && _x == "task0") then {
         //systemChat "setting complete";
-        [_x, "SUCCEEDED", true] call BIS_fnc_taskSetState;
+        // [_x, "SUCCEEDED", true] call BIS_fnc_taskSetState;
       }
     } forEach _tasks;
 

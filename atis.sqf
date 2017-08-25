@@ -1,11 +1,4 @@
 /*
-
-//Didn't actually need to do this
-Set sample format to 16 bit PCM
-Export to MP3 with Constant bit rate, at 128 or less (maybe higher is OK too)
-
-//This worked
-
 So:
 Record the whole thing. Export to MP3 master
 Trying the two chains - export to MP3_56 then export to ogg
@@ -14,7 +7,6 @@ _airportCodes = ["tanoa", "tuvanaka", "baja", "stgeorge", "larochelle"];
 
 Requirements:
  - atc.sqf
-
 */
 
 dingus_fnc_atis_altis = {

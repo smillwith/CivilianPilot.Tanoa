@@ -3,6 +3,7 @@
 dingus_fnc_playerInit = {
   params ["_unit"];
 
+/*
   sleep 6;
 
   _taskIndex = 0;
@@ -32,7 +33,7 @@ dingus_fnc_playerInit = {
     "interact",  //Task type
     false    //shared
   ] call BIS_fnc_taskCreate;
-
+*/
   ["OnBoarding", "1"] call dingus_fnc_setVar;
 };
 
@@ -71,14 +72,6 @@ dingus_fnc_PassengersBoarding = {
       //systemChat "Previous passenger safe to delete.";
     };
   };
-
-  [_code] spawn {
-    params ["_code"];
-    sleep 3;
-    systemChat format ["Spawning at code: ", _code];
-    [_code] call dingus_fnc_createPassengerGroup;
-  };
-
 };
 
 //TODO: We should actually call this from a trigger
@@ -180,9 +173,7 @@ dingus_fnc_DepartedLocation = {
     //Re-spawn the passenger group for this location
     _existing = [format ["NextPassenger%1", _code], nil] call dingus_fnc_getVar;
     if (isNil "_existing") then {
-      //Disable this in multiplayer
-      //systemChat 'spawning new group';
-      //[_code] call  dingus_fnc_createPassengerGroup;
+      [_code] call  dingus_fnc_createPassengerGroup;
     } else {
       //systemChat 'group already exists';
     };

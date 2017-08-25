@@ -6,7 +6,6 @@ This also gets updated via triggers
 
 Arrived at location: sets it to "" (landed / default)
 Departed location sets it to "flying"
-
 */
 
 dingus_fnc_atc_init = {
@@ -276,13 +275,14 @@ dingus_fnc_atc_repeat = {
 // player addAction [["Tanoa Tower: Acknowledge approach"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_Ground1}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canRequestGround"];
 // player addAction [["Tanoa Tower: On Final"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_Ground1}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canRequestGround"];
 
+// These work just disabled for now until we can get all airports working
 player addAction [["Tanoa Tower: Request departure"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_atc_requestDeparture}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canRequestGround"];
 player addAction [["Tanoa Tower: Acknowledge hold short"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_atc_readback1}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canReadback1"];
 player addAction [["Tanoa Tower: Holding short"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_atc_holdingShort}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canRequestClearance"];
 player addAction [["Tanoa Tower: Landing w/ info"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_atc_requestApproach}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canRequestApproach"];
 player addAction [["Tanoa Tower: Acknowledge approach"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_atc_readback2}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canReadback2"];
 player addAction [["Tanoa Tower: On final"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_atc_declareFinal}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canDeclareFinal"];
-player addAction [["Tanoa Tower: Say again, tower"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_atc_repeat}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canRepeat"];
+// player addAction [["Tanoa Tower: Say again, tower"] call dingus_fnc_formatActionLabelComms, { ["tanoa", ["1", "7"]] spawn {params ["_airport", "_runway"]; [_airport, _runway] call dingus_fnc_atc_repeat}; }, [], 15, false, true, "", "[""tanoa""] call dingus_fnc_canRepeat"];
 
 dingus_fnc_atis_say_sentence = {
   params ["_sentence"];
