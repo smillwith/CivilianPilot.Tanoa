@@ -6,53 +6,19 @@ A semi realisitc simulation of an every day civilian air pilot flying passengers
 
 Arrive at the airport. Reach your aircraft. Refuel if needed. Taxi to the departures area. Greet your passengers. Plan your route. Take off. Arrive. Taxi to Arrivals. Engine Off. Instruct your passengers
 
-TODO: 
+Features:
 
-* Add Tasks for Taxiing to/from runway
-* Add 'repair complete' and 'fuel complete' events to return trucks to their markers
-* Implement basic ATIS with Wind information
-* Toggle map details
-* Make all hangars look like the ones at (La Rochelle?)
-* Add more ambiance (in what way?)
-* Implement RANDOM date/time
-* Implement RANDOM start location
+* Simulated air traffic - Computer controlled/AI pilots that fly around at random and land at most airports.
+* ATIS (automated airport time and weather information) at each airport. Tune in before you take off or land to hear current runway information and airport conditions.
+* Landing training aids at each airport (turn them on or off at info stands).
+* A selection of aircraft including the Caeser BTT and several helicopters. Passengers will board the last aircraft you enter.
 
-Notes:
+Customizable features:
 
-What are the different states?
-
-* Nothing
-* Boarding
-* Boarded
-* Transporting/Flying (not implemented or needed yet)
-* Arrived
-
-Then there's things like:
-
-* Current Airport
-* Destination Airport
-* Current Passenger group
-* Current Fuel Truck
-* Current Repair Truck
-
-That change as you arrive at different airports and/or interact with passengers.
-
-As you change planes/vehicles, CurrentPlane is changed. So technically you could 'drive' people to their destinations
-
------
-
-Sample workflow:
-
- - Nothing
- - Taxiing
- - Nothing
- - Boarding
- - Boarded
- - Transporting
- - Arrived
- - Get Out
- - Boarded = 0
- - Nothing
+* Use the info stands (silver standing platforms) at each airport to change options.
+* Turn off task markers for enhanced realism. You'll be forced to navigate to the airport by sight or even using your map.
+* Easily customize the Weather (Clear, Cloudy, Rainy).
+* Easily change Time of Day. Fly at night - most airports are properly lit!
 
 -----
 
